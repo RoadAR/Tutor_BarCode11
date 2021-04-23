@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FA5BFE482619A2B6008F2886 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA5BFE472619A2B6008F2886 /* main.cpp */; };
 		FA5BFE542619BC4E008F2886 /* decoder_11.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA5BFE522619BC4E008F2886 /* decoder_11.cpp */; };
+		FAC9F08E262E117C00341B2F /* bar_code.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FAC9F08C262E117C00341B2F /* bar_code.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,9 @@
 		FA5BFE502619A355008F2886 /* BarCode11.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BarCode11.entitlements; sourceTree = "<group>"; };
 		FA5BFE522619BC4E008F2886 /* decoder_11.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = decoder_11.cpp; sourceTree = "<group>"; };
 		FA5BFE532619BC4E008F2886 /* decoder_11.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = decoder_11.hpp; sourceTree = "<group>"; };
+		FAC9F08C262E117C00341B2F /* bar_code.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bar_code.cpp; sourceTree = "<group>"; };
+		FAC9F08D262E117C00341B2F /* bar_code.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bar_code.hpp; sourceTree = "<group>"; };
+		FAC9F092262E11A200341B2F /* decoder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = decoder.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,10 +67,21 @@
 			children = (
 				FA5BFE502619A355008F2886 /* BarCode11.entitlements */,
 				FA5BFE472619A2B6008F2886 /* main.cpp */,
-				FA5BFE522619BC4E008F2886 /* decoder_11.cpp */,
-				FA5BFE532619BC4E008F2886 /* decoder_11.hpp */,
+				FAC9F08B262E115400341B2F /* BarCode */,
 			);
 			path = BarCode11;
+			sourceTree = "<group>";
+		};
+		FAC9F08B262E115400341B2F /* BarCode */ = {
+			isa = PBXGroup;
+			children = (
+				FA5BFE522619BC4E008F2886 /* decoder_11.cpp */,
+				FA5BFE532619BC4E008F2886 /* decoder_11.hpp */,
+				FAC9F092262E11A200341B2F /* decoder.hpp */,
+				FAC9F08C262E117C00341B2F /* bar_code.cpp */,
+				FAC9F08D262E117C00341B2F /* bar_code.hpp */,
+			);
+			path = BarCode;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +142,7 @@
 			files = (
 				FA5BFE542619BC4E008F2886 /* decoder_11.cpp in Sources */,
 				FA5BFE482619A2B6008F2886 /* main.cpp in Sources */,
+				FAC9F08E262E117C00341B2F /* bar_code.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

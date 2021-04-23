@@ -12,7 +12,7 @@ using namespace std;
 Code11Symbol::Code11Symbol(const std::string &symbol, const std::array<bool, 5> &widePattern): symbol(symbol), widePattern(widePattern) {
 }
 
-float Code11Symbol::match(const std::vector<int> &values) {
+float Code11Symbol::match(const std::vector<int> &values) const {
     if (values.size() != 5) return 0;
     vector<int> valuesSorted(values.size());
     for (int i = 0; i < values.size(); i++) {
@@ -33,8 +33,8 @@ float Code11Symbol::match(const std::vector<int> &values) {
     return score;
 }
 
-Code11Decoder::Code11Decoder() {
-    symbols = {
+Code11Decoder::Code11Decoder(Control control): control(control) {
+    symbols_ = {
         Code11Symbol("0", {0, 0, 0, 0, 1}),
         Code11Symbol("1", {1, 0, 0, 0, 1}),
         Code11Symbol("2", {0, 1, 0, 0, 1}),
@@ -49,42 +49,19 @@ Code11Decoder::Code11Decoder() {
         Code11Symbol("*", {0, 0, 1, 1, 0}),
     };
     
-    for (int i = 0; i < symbols.size(); i++) {
-        symbolMap[symbols[i].symbol] = i;
+    for (int i = 0; i < symbols_.size(); i++) {
+        symbolMap_[symbols_[i].symbol] = i;
     }
 }
 
-std::string Code11Decoder::decode(const std::vector<int> &values, Control control) {
-    string result = "";
-    for (int i = 0; i < values.size(); i++) {
-        if (values[i] >= 0) continue;
-        if (i + 5 > values.size()) {
-            break;
-        }
-        vector<int> sub(values.begin() + i, values.begin() + i + 5);
-        
-        float maxMatch = -1;
-        int maxMatchIdx = -1;
-        for (int si = 0; si < symbols.size(); si++) {
-            float match = symbols[si].match(sub);
-            if (match > maxMatch) {
-                maxMatchIdx = si;
-                maxMatch = match;
-            }
-        }
-        
-        if (maxMatchIdx >= 0) {
-            result += symbols[maxMatchIdx].symbol;
-            i+=5;
-        }
-    }
-    
+std::string Code11Decoder::decode(const std::vector<int> &values) const {
+    string result = rawDecode(values);
     
     if (control == Raw) {
         return result;
     }
     
-    // final check
+    // check string for correctness
     if (result.size() < 2 || result.front() != '*' || result.back() != '*') {
         return "";
     }
@@ -104,21 +81,48 @@ std::string Code11Decoder::decode(const std::vector<int> &values, Control contro
     return isOk ? result : "";
 }
 
-bool Code11Decoder::checkControlSymbol(const std::string &str, int controlNum) {
+std::string Code11Decoder::rawDecode(const std::vector<int> &values) const {
+    string result = "";
+    for (int i = 0; i < values.size(); i++) {
+        if (values[i] >= 0) continue;
+        if (i + 5 > values.size()) {
+            break;
+        }
+        vector<int> sub(values.begin() + i, values.begin() + i + 5);
+        
+        float maxMatch = -1;
+        int maxMatchIdx = -1;
+        for (int si = 0; si < symbols_.size(); si++) {
+            float match = symbols_[si].match(sub);
+            if (match > maxMatch) {
+                maxMatchIdx = si;
+                maxMatch = match;
+            }
+        }
+        
+        if (maxMatchIdx >= 0) {
+            result += symbols_[maxMatchIdx].symbol;
+            i+=5;
+        }
+    }
+    return result;
+}
+
+bool Code11Decoder::checkControlSymbol(const std::string &str, int controlNum) const {
     int maxWeight = controlNum == 1 ? 10 : 9;
     int weight = 1;
     int sum = 0;
     
     for (int i = (int)str.length()-2; i >= 0; i--) {
         string symb = str.substr(i, 1);
-        int val = symbolMap[symb];
+        int val = symbolMap_.at(symb);
         sum += weight * val;
         weight++;
         if (weight > maxWeight) {
             weight = 1;
         }
     }
-    int control = symbolMap[str.substr(str.length()-1, 1)];
+    int control = symbolMap_.at(str.substr(str.length()-1, 1));
     sum = sum % 11;
     
     return sum == control;
