@@ -214,8 +214,8 @@ BarCode::Recognition BarCode::detectAndRecognize(cv::Mat &image) {
     Mat debugImg;
     cvtColor(gray_, debugImg, COLOR_GRAY2BGR);
     rectangle(debugImg, blobInfo.r, CV_RGB(255, 0, 0), 5);
-    drawRotatedRect(debugImg, rr, CV_RGB(0, 255, 0), 3);
-    imshow("debug", debugImg);
+//    drawRotatedRect(debugImg, rr, CV_RGB(0, 255, 0), 3);
+    debug_imshow("debug", debugImg);
 #endif
     
     // Crop image
@@ -229,14 +229,14 @@ BarCode::Recognition BarCode::detectAndRecognize(cv::Mat &image) {
     Mat code1PixImg = getRotatedRectImg(gray_, cropRect, outSize);
     
     threshold(code1PixImg, code1PixImg, 0, 255, THRESH_OTSU);
-    Mat debugCodeImg;
-    resize(code1PixImg, debugCodeImg, Size(outSize.width, 100));
-    imshow("cropped img", debugCodeImg);
-    
     // Read image
     vector<int> pattern = image2rle(code1PixImg);
     
 #ifdef DEBUG_CODE_DRAW
+    Mat debugCodeImg;
+    resize(code1PixImg, debugCodeImg, Size(outSize.width, 100));
+    debug_imshow("cropped img", debugCodeImg);
+    
     cout << "Pattern> ";
     for (auto val : pattern) {
         cout << val << " ";
@@ -255,5 +255,15 @@ BarCode::Recognition BarCode::detectAndRecognize(cv::Mat &image) {
             break;
         }
     }
+    
+    
+#ifdef DEBUG_CODE_DRAW
+    string text = result.name + ": " + result.value;
+    putText(debugImg, text, blobInfo.r.tl() - Point(0, 5), FONT_HERSHEY_SIMPLEX, 0.8, CV_RGB(255, 0, 0), 2);
+//    rectangle(debugImg, blobInfo.r, CV_RGB(255, 0, 0), 5);
+//    drawRotatedRect(debugImg, rr, CV_RGB(0, 255, 0), 3);
+    debug_imshow("debug", debugImg);
+#endif
+    
     return result;
 }
