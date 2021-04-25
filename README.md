@@ -2,7 +2,7 @@
 
 ![C++ 17](https://img.shields.io/badge/C++-17-blue.svg?style=flat&logo=c%2B%2B)
 ![CMake](https://img.shields.io/badge/CMakeLists-YES-orange.svg)
-[![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](./License)https://opensource.org/licenses/MIT
+[![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](./License)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Cool%20example%20how%20to%20build%20you%20own%20BarCode%20scanner&url=https://github.com/RoadAR/Tutor_BarCode11)
 
 This code designed to demostrate how you can build your own barcode scanner from scratch with `OpenCV` library.
